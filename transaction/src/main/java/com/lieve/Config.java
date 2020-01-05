@@ -9,4 +9,6 @@ import org.springframework.context.annotation.ComponentScan;
 
 @ComponentScan("com.lieve")
 public class Config {
+
+
 }
