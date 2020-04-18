@@ -2,14 +2,19 @@ package com.lieve;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.springframework.beans.factory.support.AbstractBeanFactory;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * @author sunlijiang
  * @date 2020/1/5
  */
 public class AppConfigTest {
-
+	AbstractBeanFactory abstractBeanFactory;
+	DefaultListableBeanFactory beanFactory;
+	ClassPathXmlApplicationContext applicationContext;
 
 
 	public static void main(String[] args) {

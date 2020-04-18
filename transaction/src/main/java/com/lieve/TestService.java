@@ -1,7 +1,6 @@
 package com.lieve;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author sunlijiang
@@ -10,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class TestService {
 
-	@Transactional
+	// @Transactional
 	public void print() {
 		System.out.println("test");
 	}
