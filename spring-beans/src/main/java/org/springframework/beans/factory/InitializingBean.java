@@ -17,6 +17,7 @@
 package org.springframework.beans.factory;
 
 /**
+ * Bean 对象的创建、初始化、销毁即为Bean 的生命周期
  * Interface to be implemented by beans that need to react once all their properties
  * have been set by a {@link BeanFactory}: e.g. to perform custom initialization,
  * or merely to check that all mandatory properties have been set.

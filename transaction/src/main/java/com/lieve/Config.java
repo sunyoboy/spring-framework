@@ -11,12 +11,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @date 2019/12/22
  */
 
-@ComponentScan("com.lieve.service")
+@ComponentScan("com.lieve")
 public class Config {
 
-	public static void main(String[] args) {
-		ThreadPoolExecutor threadPoolExecutor;
-		ExecutorService executors = Executors.newSingleThreadExecutor();
-		executors.shutdown();
-	}
 }

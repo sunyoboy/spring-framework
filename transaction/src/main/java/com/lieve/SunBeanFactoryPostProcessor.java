@@ -16,7 +16,7 @@ public class SunBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
 
 	@Override
 	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-		GenericBeanDefinition beanDefinition = (GenericBeanDefinition) beanFactory.getBeanDefinition("userService");
-		beanDefinition.setBeanClass(UserService.class);
+		/*GenericBeanDefinition beanDefinition = (GenericBeanDefinition) beanFactory.getBeanDefinition("userService");
+		beanDefinition.setBeanClass(UserService.class);*/
 	}
 }

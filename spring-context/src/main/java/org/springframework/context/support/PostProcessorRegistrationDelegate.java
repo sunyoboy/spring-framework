@@ -30,11 +30,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
-import org.springframework.beans.factory.support.BeanDefinitionRegistry;
-import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
-import org.springframework.beans.factory.support.DefaultListableBeanFactory;
-import org.springframework.beans.factory.support.MergedBeanDefinitionPostProcessor;
-import org.springframework.beans.factory.support.RootBeanDefinition;
+import org.springframework.beans.factory.support.*;
 import org.springframework.core.OrderComparator;
 import org.springframework.core.Ordered;
 import org.springframework.core.PriorityOrdered;
@@ -52,10 +48,18 @@ final class PostProcessorRegistrationDelegate {
 	}
 
 
+	/**
+	 * BeanFactoryPostProcessor触发时机：bean定义注册之后，bean实例化之前
+	 * BeanDefinitionRegistryPostProcessor触发时机： bean定义注册之前
+	 */
 	public static void invokeBeanFactoryPostProcessors(
 			ConfigurableListableBeanFactory beanFactory, List<BeanFactoryPostProcessor> beanFactoryPostProcessors) {
 
 		// Invoke BeanDefinitionRegistryPostProcessors first, if any.
+		// processedBeans代表了一个已经处理过的Bean的容器，防止重复执行！
+		/**
+		 * beanFactory 实现为{@link DefaultListableBeanFactory}， 实现了接口BeanDefinitionRegistry
+ 		 */
 		Set<String> processedBeans = new HashSet<>();
 
 		if (beanFactory instanceof BeanDefinitionRegistry) {
@@ -67,6 +71,8 @@ final class PostProcessorRegistrationDelegate {
 				if (postProcessor instanceof BeanDefinitionRegistryPostProcessor) {
 					BeanDefinitionRegistryPostProcessor registryProcessor =
 							(BeanDefinitionRegistryPostProcessor) postProcessor;
+
+					// 调用后置处理器的后置方法
 					registryProcessor.postProcessBeanDefinitionRegistry(registry);
 					registryProcessors.add(registryProcessor);
 				}
@@ -120,14 +126,25 @@ final class PostProcessorRegistrationDelegate {
 						reiterate = true;
 					}
 				}
+
+				// 排序
 				sortPostProcessors(currentRegistryProcessors, beanFactory);
+
+				// BeanDefinitionRegistryPostProcessor list
 				registryProcessors.addAll(currentRegistryProcessors);
+
+				// 执行BeanDefinitionRegistryPostProcessor
 				invokeBeanDefinitionRegistryPostProcessors(currentRegistryProcessors, registry);
+
+				// 清空临时变量
 				currentRegistryProcessors.clear();
 			}
 
 			// Now, invoke the postProcessBeanFactory callback of all processors handled so far.
+			// BeanDefinitionRegistryPostProcessor list
 			invokeBeanFactoryPostProcessors(registryProcessors, beanFactory);
+
+			// BeanFactoryPostProcessor list
 			invokeBeanFactoryPostProcessors(regularPostProcessors, beanFactory);
 		}
 
@@ -271,6 +288,9 @@ final class PostProcessorRegistrationDelegate {
 	private static void invokeBeanDefinitionRegistryPostProcessors(
 			Collection<? extends BeanDefinitionRegistryPostProcessor> postProcessors, BeanDefinitionRegistry registry) {
 
+		/**
+		 * BeanFactoryPostProcessor SPI
+		 */
 		for (BeanDefinitionRegistryPostProcessor postProcessor : postProcessors) {
 			postProcessor.postProcessBeanDefinitionRegistry(registry);
 		}
